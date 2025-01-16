@@ -117,21 +117,20 @@
     <div class="container" id="game-container"></div>
 
     <script>
-        const pastebinUrl = "https://pastebin.com/raw/nf3Pp0qm";
-
-async function fetchLinksFromPastebin() {
-    try {
-        const response = await fetch(pastebinUrl);
-        if (!response.ok) {
-            throw new Error(`Failed to fetch links: ${response.statusText}`);
-        }
-        const links = await response.text();
-        return links.split("\n").map(link => link.trim()).filter(link => link);
-    } catch (error) {
-        console.error('Error fetching links from Pastebin:', error);
-        return [];
-    }
-}
+        const metaStoreLinks = [
+    "https://www.meta.com/experiences/freaky-nugget/27442133125385525",
+    "https://www.meta.com/experiences/project-alpha/28514190998179188",
+    "https://www.meta.com/experiences/reski-taggers/7977548235644399",
+    "https://www.meta.com/experiences/gorilla-tag/4979055762136823",
+    "https://www.meta.com/experiences/nugget-taggers/7034561680000527",
+    "https://www.meta.com/experiences/super-apes-vr/27650333331224127",
+    "https://www.meta.com/experiences/project-krabs/7711423612270870",
+    "https://www.meta.com/experiences/26070988625881801",
+    "https://mooseiscute.itch.io/projectmoose",
+    "https://www.meta.com/experiences/projectblaze/9174345122626300",
+    "https://www.meta.com/experiences/8186107854733052",
+    "https://gamer-boy-102.itch.io/flashback-taggers"
+];
 
 async function fetchGameData(url) {
     const microlinkApiUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}`;
@@ -175,8 +174,6 @@ async function loadGames() {
     const container = document.getElementById("game-container");
     container.innerHTML = "";
 
-    const metaStoreLinks = await fetchLinksFromPastebin();
-
     for (const link of metaStoreLinks) {
         const gameData = await fetchGameData(link);
         if (gameData) {
@@ -200,6 +197,7 @@ function filterGames() {
 }
 
 window.onload = loadGames;
+
 
     </script>
 </body>
