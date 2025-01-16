@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Side Games</title>
     <style>
-        /* THIS CSS IS MADE BY CHATGPT I AM DOG SHIT AT CSS SO I USED CHATGPT FOR IT*/
+        /* THIS CSS IS MADE BY CHATGPT I AM VERY BAD AT CSS SO I USED CHATGPT FOR IT*/
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -117,86 +117,90 @@
     <div class="container" id="game-container"></div>
 
     <script>
-        const metaStoreLinks = [
-            "https://www.meta.com/experiences/freaky-nugget/27442133125385525",
-            "https://www.meta.com/experiences/project-alpha/28514190998179188",
-            "https://www.meta.com/experiences/reski-taggers/7977548235644399",
-            "https://www.meta.com/experiences/gorilla-tag/4979055762136823",
-            "https://www.meta.com/experiences/nugget-taggers/7034561680000527",
-            "https://www.meta.com/experiences/super-apes-vr/27650333331224127",
-            "https://www.meta.com/experiences/project-krabs/7711423612270870",
-            "https://www.meta.com/experiences/26070988625881801",
-            "https://mooseiscute.itch.io/projectmoose",
-            "https://www.meta.com/experiences/projectblaze/9174345122626300",
-            "https://www.meta.com/experiences/8186107854733052",
-            "https://gamer-boy-102.itch.io/flashback-taggers"
-        ];
+        const pastebinUrl = "https://pastebin.com/raw/nf3Pp0qm";
 
-        async function fetchGameData(url) {
-            const microlinkApiUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}`;
-
-            try {
-                const response = await fetch(microlinkApiUrl);
-                const data = await response.json();
-
-                if (data.status === "success") {
-                    return {
-                        title: data.data.title || 'No title found',
-                        description: data.data.description || 'No description found',
-                        image: data.data.image?.url || 'default-image-url.jpg',
-                        link: data.data.url || url,
-                    };
-                } else {
-                    console.error('Error:', data.error.message);
-                    return null;
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                return null;
-            }
+async function fetchLinksFromPastebin() {
+    try {
+        const response = await fetch(pastebinUrl);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch links: ${response.statusText}`);
         }
+        const links = await response.text();
+        return links.split("\n").map(link => link.trim()).filter(link => link);
+    } catch (error) {
+        console.error('Error fetching links from Pastebin:', error);
+        return [];
+    }
+}
 
-        const createGameCard = (gameData) => {
-            const container = document.getElementById("game-container");
+async function fetchGameData(url) {
+    const microlinkApiUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}`;
 
-            const gameCard = document.createElement("div");
-            gameCard.classList.add("game-card");
-            gameCard.innerHTML = `
-                <img src="${gameData.image}" alt="${gameData.title} Logo">
-                <div class="game-name">${gameData.title}</div>
-                <p>${gameData.description}</p>
-                <a href="${gameData.link}" class="game-button" target="_blank">Go to Game</a>
-            `;
-            container.appendChild(gameCard);
-        };
+    try {
+        const response = await fetch(microlinkApiUrl);
+        const data = await response.json();
 
-        async function loadGames() {
-            const container = document.getElementById("game-container");
-            container.innerHTML = "";
-
-            for (const link of metaStoreLinks) {
-                const gameData = await fetchGameData(link);
-                if (gameData) {
-                    createGameCard(gameData);
-                }
-            }
+        if (data.status === "success") {
+            return {
+                title: data.data.title || 'No title found',
+                description: data.data.description || 'No description found',
+                image: data.data.image?.url || 'default-image-url.jpg',
+                link: data.data.url || url,
+            };
+        } else {
+            console.error('Error:', data.error.message);
+            return null;
         }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
+}
 
-        function filterGames() {
-            const input = document.getElementById("search-input").value.toLowerCase();
-            const gameCards = document.querySelectorAll(".game-card");
+const createGameCard = (gameData) => {
+    const container = document.getElementById("game-container");
 
-            gameCards.forEach(card => {
-                const gameName = card.querySelector(".game-name").textContent.toLowerCase();
-                if (gameName.includes(input)) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
-            });
+    const gameCard = document.createElement("div");
+    gameCard.classList.add("game-card");
+    gameCard.innerHTML = `
+        <img src="${gameData.image}" alt="${gameData.title} Logo">
+        <div class="game-name">${gameData.title}</div>
+        <p>${gameData.description}</p>
+        <a href="${gameData.link}" class="game-button" target="_blank">Go to Game</a>
+    `;
+    container.appendChild(gameCard);
+};
+
+async function loadGames() {
+    const container = document.getElementById("game-container");
+    container.innerHTML = "";
+
+    const metaStoreLinks = await fetchLinksFromPastebin();
+
+    for (const link of metaStoreLinks) {
+        const gameData = await fetchGameData(link);
+        if (gameData) {
+            createGameCard(gameData);
         }
+    }
+}
 
-        window.onload = loadGames;
+function filterGames() {
+    const input = document.getElementById("search-input").value.toLowerCase();
+    const gameCards = document.querySelectorAll(".game-card");
+
+    gameCards.forEach(card => {
+        const gameName = card.querySelector(".game-name").textContent.toLowerCase();
+        if (gameName.includes(input)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+
+window.onload = loadGames;
+
     </script>
 </body>
 </html>
