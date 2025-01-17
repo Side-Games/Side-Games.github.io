@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="title" content="Side Games">
+<meta name="description" content="Side Games is a appstore for vr games we have no rules (no porn or weird stuff) we allow gtag copies and fangames">
+<meta name="keywords" content="appstore, vr, sidegames,">
+<meta name="robots" content="index, follow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="language" content="English">
+<meta name="author" content="SnakeArmy">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Side Games</title>
+    <style>
+        /* THIS CSS IS MADE BY CHATGPT I AM VERY BAD AT CSS SO I USED CHATGPT FOR IT*/
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #0078D4;
+            padding: 10px 20px;
+            color: white;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .navbar .search-bar {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .navbar .search-bar input {
+            width: 100%;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            margin-top: 80px;
+            overflow-y: auto;
+            height: calc(100vh - 80px);
+            padding-bottom: 20px;
+        }
+
+        .game-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 15px;
+            padding: 20px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        .game-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .game-name {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .game-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #0078D4;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .game-button:hover {
+            background-color: #005A8D;
+        }
+
+        .top-right-text a {
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .top-right-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Side Games</div>
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Type here... (Freaky Nugget is a good game you should try it)" onkeyup="filterGames()">
+        </div>
+        <div class="top-right-text"><a style="margin-right: 17px;" href="https://discord.gg/YQyAMRDkda">Join the discord to request your game to be added‎ ‎ </a></div>
+    </div>
+
+    <div class="container" id="game-container"></div>
+
+    <script>
+        const metaStoreLinks = [
+    "https://www.meta.com/experiences/freaky-nugget/27442133125385525",
+    "https://www.meta.com/experiences/project-alpha/28514190998179188",
+    "https://www.meta.com/experiences/reski-taggers/7977548235644399",
+    "https://www.meta.com/experiences/gorilla-tag/4979055762136823",
+    "https://www.meta.com/experiences/nugget-taggers/7034561680000527",
+    "https://www.meta.com/experiences/super-apes-vr/27650333331224127",
+    "https://www.meta.com/experiences/project-krabs/7711423612270870",
+    "https://www.meta.com/experiences/26070988625881801",
+    "https://mooseiscute.itch.io/projectmoose",
+    "https://www.meta.com/experiences/projectblaze/9174345122626300",
+    "https://www.meta.com/experiences/8186107854733052",
+    "https://gamer-boy-102.itch.io/flashback-taggers"
+];
+
+async function fetchGameData(url) {
+    const apiEndpoint = `http://121.44.203.63:3078/fetch-metadata?url=${encodeURIComponent(url)}`;
+    try {
+        const response = await fetch(apiEndpoint);
+        const data = await response.json();
+
+        if (!data.error) {
+            return {
+                title: data.title,
+                description: data.description,
+                image: data.image,
+                link: data.url,
+            };
+        } else {
+            console.error('Error:', data.error);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching game data:', error);
+        return null;
+    }
+}
+
+
+const createGameCard = (gameData) => {
+    const container = document.getElementById("game-container");
+
+    const gameCard = document.createElement("div");
+    gameCard.classList.add("game-card");
+    gameCard.innerHTML = `
+        <img src="${gameData.image}" alt="${gameData.title} Logo">
+        <div class="game-name">${gameData.title}</div>
+        <p>${gameData.description}</p>
+        <a href="${gameData.link}" class="game-button" target="_blank">Go to Game</a>
+    `;
+    container.appendChild(gameCard);
+};
+
+async function loadGames() {
+    const container = document.getElementById("game-container");
+    container.innerHTML = "";
+
+    for (const link of metaStoreLinks) {
+        const gameData = await fetchGameData(link);
+        if (gameData) {
+            createGameCard(gameData);
+        }
+    }
+}
+
+function filterGames() {
+    const input = document.getElementById("search-input").value.toLowerCase();
+    const gameCards = document.querySelectorAll(".game-card");
+
+    gameCards.forEach(card => {
+        const gameName = card.querySelector(".game-name").textContent.toLowerCase();
+        if (gameName.includes(input)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+
+window.onload = loadGames;
+
+
+    </script>
+</body>
+</html>
