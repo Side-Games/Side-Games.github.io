@@ -140,7 +140,7 @@
             "https://gamer-boy-102.itch.io/flashback-taggers"
         ];
 
-        const cache = new Map(); // In-memory cache for the session
+        const cache = new Map();
 
         async function fetchGameDataWithCache(url) {
             if (cache.has(url)) {
@@ -162,7 +162,7 @@
                         image: data.data.image?.url || "default-image-url.jpg",
                         link: data.data.url || url,
                     };
-                    cache.set(url, gameData); // Save to cache
+                    cache.set(url, gameData);
                     return gameData;
                 } else {
                     console.error("Error:", data.error.message);
