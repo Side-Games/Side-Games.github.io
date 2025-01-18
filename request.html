@@ -3,45 +3,93 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Discord Webhook Form</title>
+    <title>Side Games Game Request Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      h1 {
+        font-size: 2em;
+        margin-bottom: 20px;
+      }
+
+      form {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        box-sizing: border-box;
+      }
+
+      label {
+        font-size: 1.1em;
+        color: #333;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1em;
+        box-sizing: border-box;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #0078d4;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.1em;
+        cursor: pointer;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      button:hover {
+        background-color: #005a8d;
+      }
+    </style>
   </head>
   <body>
     <h1>Send Game Request</h1>
     <form action="http://121.44.203.63:3078/send-to-discord" method="POST">
-      <label for="what-is-the-name-of-the-game"
-        >What is the name of the game?</label
-      >
-      <br /><br />
-
-      <label for="what-is-the-name-of-the-game">Answer:</label>
+      <label for="game-name">What is the name of the game?</label>
       <input
         type="text"
-        id="what is the name of the game?"
-        name="what is the name of the game?"
+        id="game-name"
+        name="game-name"
         required
       /><br /><br />
 
-      <label for="question_2"
-        >Send the games link (Itch.io or Applab ONLY)</label
-      >
-      <br /><br />
-
-      <label for="send the games link">Answer:</label>
+      <label for="game-link">Send the game's link (Itch.io or Applab ONLY)</label>
       <input
         type="text"
-        id="send the games link"
-        name="send the games link"
+        id="game-link"
+        name="game-link"
         required
       /><br /><br />
 
-      <label for="question_3">What is your discord username?</label>
-      <br /><br />
-
-      <label for="what is your discord username">Answer:</label>
+      <label for="discord-username">What is your discord username?</label>
       <input
         type="text"
-        id="what is your discord username"
-        name="what is your discord username"
+        id="discord-username"
+        name="discord-username"
         required
       /><br /><br />
 
