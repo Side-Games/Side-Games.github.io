@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discord Webhook Form</title>
+  </head>
+  <body>
+    <h1>Send Game Request</h1>
+    <form action="http://121.44.203.63:3078/send-to-discord" method="POST">
+      <label for="what-is-the-name-of-the-game"
+        >What is the name of the game?</label
+      >
+      <br /><br />
+
+      <label for="what-is-the-name-of-the-game">Answer:</label>
+      <input
+        type="text"
+        id="what is the name of the game?"
+        name="what is the name of the game?"
+        required
+      /><br /><br />
+
+      <label for="question_2"
+        >Send the games link (Itch.io or Applab ONLY)</label
+      >
+      <br /><br />
+
+      <label for="send the games link">Answer:</label>
+      <input
+        type="text"
+        id="send the games link"
+        name="send the games link"
+        required
+      /><br /><br />
+
+      <label for="question_3">What is your discord username?</label>
+      <br /><br />
+
+      <label for="what is your discord username">Answer:</label>
+      <input
+        type="text"
+        id="what is your discord username"
+        name="what is your discord username"
+        required
+      /><br /><br />
+
+      <button type="submit">Send</button>
+    </form>
+  </body>
+</html>
